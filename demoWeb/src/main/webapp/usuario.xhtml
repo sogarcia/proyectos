@@ -1,0 +1,93 @@
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:p="http://primefaces.org/ui">
+
+<h:head>
+
+</h:head>
+
+<h:body>
+
+	<h:form>
+		<p:growl id="msg" />
+		<p:panel header="Formulario de usuarios" id="pnlFormularioUsuario">
+			<h:panelGrid columns="2" border="0">
+				<p:outputLabel value="Cedula" />
+				<p:inputText id="txtCodigo"
+					binding="#{usuarioVista.txtCodigo}">
+					<p:ajax listener="#{usuarioVista.getTxtCedulaListener}"
+						update="pnlFormularioUsuario,pnlListaUsuario" />
+				</p:inputText>
+
+				<p:outputLabel value="Tipo Usuario" />
+				<p:selectOneMenu id="somTipoUsuario"
+					binding="#{usuarioVista.somTipoUsuario}">
+					<f:selectItem itemValue="-1" itemLabel="-SELECCIONE-" />
+					<f:selectItems value="#{usuarioVista.losTiposUsuariosItems}" />
+				</p:selectOneMenu>
+
+				<p:outputLabel value="Nombre" />
+				<p:inputText id="txtNombre" binding="#{usuarioVista.txtNombre}" />
+
+				<p:outputLabel value="Login" />
+				<p:inputText id="txtLogin"
+					binding="#{usuarioVista.txtLogin}" />
+
+				<p:outputLabel value="Clave" />
+				<p:password id="pwsClave" binding="#{usuarioVista.pswClave}" feedback="true" />
+
+
+			</h:panelGrid>
+			<h:panelGrid columns="4" border="0">
+				<p:commandButton id="btnCrear" value="Crear"
+					update="msg,pnlListaUsuario" binding="#{usuarioVista.btnGuardar}"
+					disabled="true" action="#{usuarioVista.crearAction}" />
+				<p:commandButton id="btnModificar" value="Modificar"
+					update="msg,pnlListaUsuario" binding="#{usuarioVista.btnModificar}"
+					disabled="true" action="#{usuarioVista.modificarAction}" />
+				<p:commandButton id="btnBorrar" value="Borrar"
+					update="msg,pnlListaUsuario,pnlFormularioUsuario" binding="#{usuarioVista.btnBorrar}"
+					disabled="true" action="#{usuarioVista.borrarAction}">
+					<p:confirm header="Alerta!" message="Seguro que desea eliminar el usuario?"
+						icon="ui-icon-alert" />
+				</p:commandButton>
+
+				<p:commandButton id="btnLimpiar" value="Limpiar"
+					update="msg,pnlFormularioUsuario"
+					binding="#{usuarioVista.btnLimpiar}" disabled="false"
+					action="#{usuarioVista.limpiarAction}" />
+
+				<p:confirmDialog global="true" showEffect="fade" hideEffect="fade">
+					<p:commandButton value="Si" type="button"
+						styleClass="ui-confirmdialog-yes" icon="ui-icon-check" />
+					<p:commandButton value="No" type="button"
+						styleClass="ui-confirmdialog-no" icon="ui-icon-close" />
+				</p:confirmDialog>
+			</h:panelGrid>
+
+		</p:panel>
+
+		<p:panel header="Listado Usuarios" id="pnlListaUsuario">
+			<h:panelGrid columns="1" border="0">
+				<p:dataTable var="usuario" value="#{usuarioVista.losUsuarios}"
+					paginator="true" rows="5"
+					paginatorTemplate="{CurrentPageReport} {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}"
+					rowsPerPageTemplate="5,10,15">
+					<p:column headerText="Cedula" filterBy="#{usuario.usuCedula}"
+						sortBy="#{usuario.usuCedula}">
+						<p:outputLabel value="#{usuario.usuCedula}" />
+					</p:column>
+					<p:column headerText="Nombre" filterBy="#{usuario.usuNombre}">
+						<p:outputLabel value="#{usuario.usuNombre}" />
+					</p:column>
+					<p:column headerText="Login" filterBy="#{usuario.usuLogin}">
+						<p:outputLabel value="#{usuario.usuLogin}" />
+					</p:column>
+				</p:dataTable>
+
+			</h:panelGrid>
+		</p:panel>
+	</h:form>
+</h:body>
+</html>

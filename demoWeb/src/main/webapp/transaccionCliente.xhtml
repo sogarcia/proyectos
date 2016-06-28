@@ -1,0 +1,90 @@
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:p="http://primefaces.org/ui">
+
+<h:head>
+
+</h:head>
+
+<h:body>
+
+	<h:form id="frmTransacciones">
+		<p:growl id="msg" />
+		<!-- <h:panelGrid columns="1" > -->
+		<p:panel header="Información Cuenta" id="pnlFormularioCuenta"
+			style="width:660px;">
+			<h:panelGrid columns="4" border="0">
+				<p:outputLabel value="N° Cuenta" />
+				<p:inputText id="txtNumeroCuenta" binding="#{transaccionesVista.txtNumeroCuenta}"> 
+					<p:ajax listener="#{transaccionesVista.getTxtCuentaListener}" update="frmTransacciones,msg"/>
+				</p:inputText>
+				<p:outputLabel value="Saldo" />
+				<p:inputText id="txtSaldoCuenta" disabled="true" binding="#{transaccionesVista.txtSaldoCuenta}" style= "background-color: aqua">					
+				</p:inputText>
+			</h:panelGrid>
+		</p:panel>
+		<p:panel header="Informacion Cliente" id="pnlFormularioCliente"
+			style="width:660px;">
+			<h:panelGrid columns="4" border="0">
+				<p:outputLabel value="Id" />
+				<p:inputText id="txtIdentificacionCliente" disabled="true" binding="#{transaccionesVista.txtIdCliente}"></p:inputText>
+				<p:outputLabel value="Nombre" />
+				<p:inputText id="txtNombreCliente" disabled="true" binding="#{transaccionesVista.txtNombreCliente}"></p:inputText>
+				<p:outputLabel value="Email" />
+				<p:inputText id="txtEmailCliente" disabled="true" binding="#{transaccionesVista.txtEmailCliente}"></p:inputText>
+				<p:outputLabel value="Telefono" />
+				<p:inputText id="txtTelefonoCliente" disabled="true" binding="#{transaccionesVista.txtTelefonoCliente}"></p:inputText>
+			</h:panelGrid>
+		</p:panel>
+		<p:panel header="Usuario" id="pnlFormularioUsuario"
+			style="width:660px;">
+			<h:panelGrid columns="4" border="0">
+				<p:outputLabel value="Usuario" />
+				<p:selectOneMenu id="somUsuario" style="font-size:15px; width:205px" binding="#{transaccionesVista.somUsuarios}">
+					<f:selectItem itemValue="-1" itemLabel="-SELECCIONE-" />
+					<f:selectItems value="#{transaccionesVista.losUsuarioItems}" />
+				</p:selectOneMenu>
+				<p:outputLabel value="ValorTransaccion" />
+				<p:inputText id="txtValorTransaccion" binding="#{transaccionesVista.txtValorTransaccion}">
+						<f:validateLength minimum="3" maximum="20" />
+				</p:inputText>
+			</h:panelGrid>
+		</p:panel>
+		<br />
+		<p:panel style="width:660px;">
+			<h:panelGrid columns="3">
+				<p:commandButton id="btnConsignar" value="Consignar" binding="#{transaccionesVista.btnConsignar}" disabled="true"
+					style="width: 205px;" action="#{transaccionesVista.consignarAction}" update="msg,frmTransacciones,pnlListaTransaccion"/>
+				<p:commandButton id="btnRetirar" value="Retirar" binding="#{transaccionesVista.btnRetirar}" disabled="true"
+					style="width: 205px;" action="#{transaccionesVista.retirarAction}" update="msg,frmTransacciones,pnlListaTransaccion"/>
+				<p:commandButton id="btnLimpiar" value="Limpiar" binding="#{transaccionesVista.btnLimpiar}" 
+					style="width: 205px;" action="#{transaccionesVista.limpiarAction}" update="msg,frmTransacciones,pnlListaTransaccion" />
+			</h:panelGrid>
+		</p:panel>
+		<br />
+		<p:panel header="Transacciones Cuenta" id="pnlListaTransaccion">
+			<h:panelGrid columns="1" border="0">
+				<p:dataTable var="transaccion" value="#{transaccionesVista.lastransacciones}"
+					paginator="true" rows="5"
+					paginatorTemplate="{CurrentPageReport} {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}"
+					rowsPerPageTemplate="5,10,15">
+					<p:column headerText="Tipo" filterBy="#{transaccion.tipoTransaccion}"
+						sortBy="#{transaccion.tipoTransaccion}">
+						<p:outputLabel value="#{transaccion.tipoTransaccion}" />
+					</p:column>
+					<p:column headerText="Valor" filterBy="#{transaccion.valorTransaccion}">
+						<p:outputLabel value="#{transaccion.valorTransaccion}" />
+					</p:column>
+					<p:column headerText="Fecha" filterBy="#{transaccion.fechaTransaccion}">
+						<p:outputLabel value="#{transaccion.fechaTransaccion}" />
+					</p:column>
+				</p:dataTable>
+
+			</h:panelGrid>
+		</p:panel>
+
+	</h:form>
+
+</h:body>
+</html>

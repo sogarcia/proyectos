@@ -1,0 +1,96 @@
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:p="http://primefaces.org/ui">
+
+<h:head>
+
+</h:head>
+
+<h:body>
+
+	<h:form>
+		<p:growl id="msg" />
+		<p:panel header="Formulario de clientes" id="pnlFormularioCliente">
+			<h:panelGrid columns="2" border="0">
+				<p:outputLabel value="Id" />
+				<p:inputText id="txtIdentificacion"
+					binding="#{clienteVista.txtIdentificacion}">
+					<p:ajax listener="#{clienteVista.getTxtIdentificacionListener}"
+						update="pnlFormularioCliente,pnlListaCliente" />
+				</p:inputText>
+
+				<p:outputLabel value="Tipo Documento" />
+				<p:selectOneMenu id="somTipoDocumento"
+					binding="#{clienteVista.somTipoDocumentos}">
+					<f:selectItem itemValue="-1" itemLabel="-SELECCIONE-" />
+					<f:selectItems value="#{clienteVista.losTiposDocumentosItems}" />
+				</p:selectOneMenu>
+
+				<p:outputLabel value="Nombre" />
+				<p:inputText id="txtNombre" binding="#{clienteVista.txtNombre}" />
+
+				<p:outputLabel value="Direccion" />
+				<p:inputText id="txtDireccion"
+					binding="#{clienteVista.txtDireccion}" />
+
+				<p:outputLabel value="Telefono" />
+				<p:inputText id="txtTelefono" binding="#{clienteVista.txtTelefono}" />
+
+				<p:outputLabel value="Mail" />
+				<p:inputText id="txtMail" binding="#{clienteVista.txtMail}" />
+
+
+			</h:panelGrid>
+			<h:panelGrid columns="4" border="0">
+				<p:commandButton id="btnCrear" value="Crear"
+					update="msg,pnlListaCliente" binding="#{clienteVista.btnGuardar}"
+					disabled="true" action="#{clienteVista.crearAction}" />
+				<p:commandButton id="btnModificar" value="Modificar"
+					update="msg,pnlListaCliente" binding="#{clienteVista.btnModificar}"
+					disabled="true" action="#{clienteVista.modificarAction}" />
+				<p:commandButton id="btnBorrar" value="Borrar"
+					update="msg,pnlListaCliente,pnlFormularioCliente" binding="#{clienteVista.btnBorrar}"
+					disabled="true" action="#{clienteVista.borrarAction}">
+					<p:confirm header="Alerta!" message="Seguro que desea eliminar el cliente?"
+						icon="ui-icon-alert" />
+				</p:commandButton>
+
+				<p:commandButton id="btnLimpiar" value="Limpiar"
+					update="msg,pnlFormularioCliente"
+					binding="#{clienteVista.btnLimpiar}" disabled="false"
+					action="#{clienteVista.limpiarAction}" />
+
+				<p:confirmDialog global="true" showEffect="fade" hideEffect="fade">
+					<p:commandButton value="Si" type="button"
+						styleClass="ui-confirmdialog-yes" icon="ui-icon-check" />
+					<p:commandButton value="No" type="button"
+						styleClass="ui-confirmdialog-no" icon="ui-icon-close" />
+				</p:confirmDialog>
+			</h:panelGrid>
+
+		</p:panel>
+
+		<p:panel header="Listado Clientes" id="pnlListaCliente">
+			<h:panelGrid columns="1" border="0">
+				<p:dataTable var="cliente" value="#{clienteVista.losClientes}"
+					paginator="true" rows="5"
+					paginatorTemplate="{CurrentPageReport} {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}"
+					rowsPerPageTemplate="5,10,15">
+					<p:column headerText="ID" filterBy="#{cliente.cliId}"
+						sortBy="#{cliente.cliId}">
+						<p:outputLabel value="#{cliente.cliId}" />
+					</p:column>
+					<p:column headerText="Nombre" filterBy="#{cliente.cliNombre}">
+						<p:outputLabel value="#{cliente.cliNombre}" />
+					</p:column>
+					<p:column headerText="Mail" filterBy="#{cliente.cliMail}">
+						<p:outputLabel value="#{cliente.cliMail}" />
+					</p:column>
+				</p:dataTable>
+
+			</h:panelGrid>
+		</p:panel>
+	</h:form>
+</h:body>
+</html>
